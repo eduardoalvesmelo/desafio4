@@ -1,14 +1,18 @@
 package com.devsuperior.dsmeta.controllers;
 
+import com.devsuperior.dsmeta.dto.SellerSumDTO;
+import com.devsuperior.dsmeta.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
 import com.devsuperior.dsmeta.services.SaleService;
+
+import java.sql.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/sales")
@@ -16,6 +20,7 @@ public class SaleController {
 
 	@Autowired
 	private SaleService service;
+	private SellerService sellerService;
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<SaleMinDTO> findById(@PathVariable Long id) {
@@ -30,8 +35,9 @@ public class SaleController {
 	}
 
 	@GetMapping(value = "/summary")
-	public ResponseEntity<?> getSummary() {
-		// TODO
-		return null;
+	@ResponseBody
+	public ResponseEntity<List<SellerSumDTO>> findAll(@RequestParam Date minDate, Date maxDate) {
+		List<SellerSumDTO> dto = sellerService.findAll(minDate,maxDate);
+		return ResponseEntity.ok(dto);
 	}
 }
