@@ -3,21 +3,25 @@ package com.devsuperior.dsmeta.services;
 import com.devsuperior.dsmeta.dto.SellerSumDTO;
 import com.devsuperior.dsmeta.projections.SellerSumProjection;
 import com.devsuperior.dsmeta.repositories.SellerRepository;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class SellerService {
 
+    @Autowired
     SellerRepository repository;
 
     @Transactional(readOnly = true)
-    public List<SellerSumDTO> findAll(@RequestParam Date dtInicio, Date dtFinal) {
+    public List<SellerSumDTO> findAll(String dtInicio, String dtFinal) {
         List<SellerSumProjection> list = repository.search(dtInicio,dtFinal);
-        List<SellerSumDTO> result = list.stream().map(x -> new SellerSumDTO(x)).collect(Collectors.toList());
-        return result;
+        return list.stream().map(SellerSumDTO::new).collect(Collectors.toList());
     }
 }

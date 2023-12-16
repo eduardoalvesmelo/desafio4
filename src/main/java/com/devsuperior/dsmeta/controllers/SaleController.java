@@ -4,6 +4,8 @@ import com.devsuperior.dsmeta.dto.SellerSumDTO;
 import com.devsuperior.dsmeta.services.SaleService;
 import com.devsuperior.dsmeta.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +37,8 @@ public class SaleController {
 	}
 
 	@GetMapping(value = "/summary")
-	public List<SellerSumDTO> findAll(@RequestParam Date minDate, Date maxDate) {
+	public List<SellerSumDTO> findAll(@RequestParam String minDate, String maxDate) {
         return sellerService.findAll(minDate, maxDate);
 	}
+
 }
